@@ -49,6 +49,7 @@ Day1
 Infra monitoring
 - Linux			Demo
 - Windows		Demo
+- Process
 - Docker
 - Ansible
 =====================================
@@ -123,6 +124,120 @@ Piyush Mishra		15.207.99.86		ulDBPH4t=juGUDkkwztwn?3kr%%ZwAZj
 Raj Kumar		52.66.245.6		eB$dtL9d)&aB-r4gX2G(dVo5q)Y7o!Bj
 Nishant agarwal		3.7.73.33		((&hGnF;Z4(Zn)jsaNYWNgK=IPzcI2dc
 Jackson Crasto		15.207.112.119		L2VC.7O6%qFijlAceWx2XAtGYb-*yU.s
+
+==================================================================
+How to Enalble Process Monitoring in Datadog using  Datadog Agent.
+===========================
+Step 1- verify wether process monitoring is enabled or not?
+
+Step 2- Open your datadog.yaml and make following entry.
+
+
+How ot troublshoot agent?
+===============================
+ 41  cd /etc/datadog-agent/
+   42  ls
+   43  vi datadog.yaml
+   44  systemctl restart datadog-agent
+   45  datadog-agent
+   46  clear
+   47  datadog-agent configcheck
+   48  ps -eaf | grep data
+   49  systemctl status datadog-agent
+   50  systemctl restart datadog-agent
+   51  systemctl status datadog-agent
+   52  clear
+   53  systemctl status datadog-agent
+   54  clear
+   55  systemctl status datadog-agent
+   56  cd /opt/
+   57  ls
+   58  cd datadog-agent/
+   59  clear
+   60  ls
+   61  cd /etc/datadog-agent/
+   62  ls
+   63  vi datadog.yaml
+   64  systemctl restart datadog-agent
+   65  systemctl status datadog-agent
+   66  clear
+   67  cd /var/log/
+   68  ls
+   69  cd datadog/
+   70  ls
+   71  clear
+   72  pwd
+   73  ls
+   74  ls -la
+   75  rm -rf *
+   76  pwd
+   77  ls
+   78  systemctl restart datadog-agent
+   79  systemctl status datadog
+   80  systemctl status datadog-agent
+   81  clear
+   82  ls
+   83  ls
+   84  systemctl stop datadog
+   85  systemctl stop datadog-agent
+   86  ls
+   87  systemctl start datadog-agent
+   88  ls
+   89  clear
+   90  ls
+   91  systemctl start datadog-agent
+   92  cd /etc/
+   93  ls
+   94  clear
+   95  cd datadog-agent/
+   96  ;ls
+   97  clear
+   98  lsd
+   99  ls
+  100  ls -la
+  101  datadog-agent
+  102  datadog-agent config
+  103  ls
+  104  vi datadog.yaml
+  105  clear
+===============================================
+What is Docker?
+------------------
+https://www.devopsschool.com/videos/show/docker?type=video
+	Manage Container
+
+What is Container?
+	Has your APP Runtime. 
+		with all Required resources.
+
+===========================
+Step 1 - Install Docker
+		- Linux
+		- Not for windows...only 2019+
+https://www.devopsschool.com/tutorial/docker/install-config/docker-install-commuityedition-centos-rhel.html
+
+Step 2 - Enable Docker interg
+
+docker run -itd ubuntu
+docker run -itd ubuntu
+docker run -d jenkins/jenkins
+docker run -d jenkins/jenkins
+
+Wait for 60 second then check site...
+
+systemctl stop datadog-agent
+ 203  usermod -a -G docker dd-agent
+  204  cd /etc/datadog-agent/conf.d/docker.d/
+  205  cp conf.yaml.example conf.yaml
+  208  vi conf.yaml
+  211  systemctl start datadog-agent
+  212  systemctl status datadog-agent
+  213  datadog-agent config | grep docker
+
+
+
+
+
 
 
 
