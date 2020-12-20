@@ -1,0 +1,118 @@
+1234567890
+================
+Start - 10 AM IST - 
+End - 7PM IST
+=================
+Lunch 1.30 -2.30 PM
+----------------------
+2 Break - 15 mins
+----------------------
+	11.30 PM
+	4.30 PM
+
+Demo + Lab = AWS
+============================
+SSH + RDP
+============================
+Datadog Vs Spunk Vs NewRelic
+============================
+INFRA       LOG		APM
+----------------------------
+Prom        ES          Jmeter++++
+===================================
+		10 mins
+==========================================
+Day 1
+-------------------
+Datadog Introduction
+Datadog Agent
+Datadog Infra
+Datadog Monitor aka Alerts
+
+Day 2
+-------------------
+Datadog Log
+Datadog APM
+Datadog Monitor aka Alerts
+
+Day 3
+-------------------
+Datadog SYNT
+Datadog RUM 
+Datadog Monitor aka Alerts
+Datadog Dashboard
+
+=============================
+Day1 
+
+--------------
+Infra monitoring
+- Linux			Demo
+- Windows		Demo
+- Docker
+- Ansible
+=====================================
+Agent	datadog.yaml	integ.yaml
+======================================
+Linux - 13.233.150.215
+centos
+rajesh-mumbai.ppk	PUTTY
+rajesh-mumbai.pem	SSH
+-------------------
+DD_AGENT_MAJOR_VERSION=7 
+DD_API_KEY=8ddb64399915e4a8db806f9DDD
+DD_SITE="datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"
+
+DD_AGENT_MAJOR_VERSION=7 DD_API_KEY=8ddb64399915e4a8db8DDDDDDDDa1aec4f DD_SITE="datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"
+
+If you ever want to stop the Agent, run:
+     $ systemctl stop datadog-agent
+And to run it again run:
+     $ systemctl start datadog-agent
+
+Conf dir - /etc/datadog-agent
+Install dir - /opt/datadog-agent
+Exec Dir - /opt/datadog-agent/bin/
+
+  29  systemctl status datadog-agent
+   30  clear
+   31  cd
+   32  ls
+   33  datadog-agent
+   34  datadog-agent configcheck
+
+
+Windows - 13.126.245.127
+Administrator
+Bfv5s.VfP*(p5tKyezQB3Z9@VMf4IaQD
+
+pankaj mishra	13.127.51.34
+Prerana Chavan	13.234.213.155
+Akash Bhagadkar	13.232.226.71
+Raghuram Rallapalli	15.206.28.81
+Vivek Gupta	13.234.115.86
+Anshuman Gangal	13.233.165.12
+Pranav Gosavi	13.233.165.12
+Gajendra Sharma	13.127.175.240
+Sudhir Sharma	13.233.81.17
+Piyush Mishra	13.233.87.232
+Raj Kumar	13.233.165.143		
+==================================
+usernme - centos
+Password - key
+https://www.devopsschool.com/notes/docker/2019/
+rajesh-mumbai.ppk
+rajesh-mumbai.pem
+Putty - https://www.devopsschool.com/blog/how-to-login-linux-server-of-aws-from-windows-using-putty/
+
+Step 5 & 6
+
+
+
+
+
+
+
+
+
+
