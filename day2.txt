@@ -1,0 +1,293 @@
+We need to cover this tomorrow as well
+----------
+Database	BackendProgramming	FrontEndPro
+---------------------------------------------------------
+mysql		JAVA - PYTHON - RUBY	JS - HTML - CSS
+------------------------------------------------------
+		JSServer Level - NodeJs 	jquer - react - angular
+
+		Avoid Repeat - REuse
+		---------------------
+Framework	Springboot - Django
+-------------------------------------------
+RUNTIME		JVM	PV
+-------------------------------------------
+APP Server	TOMCAT			IIS
+		JAVA			DOTNET
+		-------------------------------
+		.java			.net
+
+when we cover integrations
+•	Tomcat
+•		Java Project based on Spring boot 
+	-------------------------------------------
+	Tomcat -> VM -> PROCESS
+	using ------------------ agent+Integ
+
+
+
+•	Kubernetes
+
+•	Tomcat application deployed on Kubernetes
+	Kubernetes ---> Node --> Docker -> POD (Container) by Kubelet (Agent of k8s)
+					---> Monitor POD
+-----------------------------------------------
+What is Kubernetes?
+------------------
+
+===============================================
+===============================================
+==========================================
+Day 1
+-------------------
+Datadog Introduction
+Datadog Agent
+Datadog Infra
+Datadog Monitor aka Alerts
+
+Day 2
+-------------------
+Datadog Log
+Datadog APM
+Datadog Monitor aka Alerts
+
+Day 3
+-------------------
+Datadog SYNT
+Datadog RUM 
+Datadog Monitor aka Alerts
+Datadog Dashboard
+=============================================
+=========================================================================================
+Day Recap
+-----------------
+What is Datadog?
+	- SAAS
+Why we need Datadog?
+	- OBERBABILITY 
+		- INFRA	
+		- APM
+		- LOG
+		- SYN
+		- RUN
+---------------------------
+Datadog infra agent
+	- Apache
+	- Docker - container
+--------------------------------------
+Module 1 - DEMO
+Step 1 - Get a VM 					DONE
+Step 2 - Install DD Agent 				DONE
+Step 3 - Enable Process					DONE
+Step 4 - Install & Running Tomcat			DONE
+Step 5 - ENABLE Tomcat Interg				DONE
+Step 6 - Install Springboot app				DONE
+Step 6 - Experience it.			
+
+Module 2 - DEMO + LAB
+==================================================
+Step 1 - Setup k8s Clustor				DONE
+https://www.devopsschool.com/blog/setting-up-kubernetes-clusters-using-kubeadm-manual-way-in-rhel-7-centos7/
+
+Server - Control Plane	13.232.65.161
+Worker - Node - Slave	65.0.127.92
+
+Step 2 - Install DD Agent in Each node of the Clustor
+DD_AGENT_MAJOR_VERSION=7 DD_API_KEY=78ef904b8401f15a458bb59464c6e54f DD_SITE="datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"
+
+
+Step 3 - Run the Datadog Agent in your Kubernetes cluster as a DaemonSet
+======================================================
+Method 1 - DaemonSets 
+Method 2 - Helm
+======================================================
+
+DaemonSets  - To install the Datadog Agent on your Kubernetes cluster:
+
+Step 1:- Configure Agent permissions - Create the appropriate ClusterRole, ServiceAccount, and ClusterRoleBinding with the following command:
+ 
+$ kubectl apply -f "https://raw.githubusercontent.com/DataDog/datadog-agent/master/Dockerfiles/manifests/rbac/clusterrole.yaml"
+
+$ kubectl apply -f "https://raw.githubusercontent.com/DataDog/datadog-agent/master/Dockerfiles/manifests/rbac/serviceaccount.yaml"
+
+$ kubectl apply -f "https://raw.githubusercontent.com/DataDog/datadog-agent/master/Dockerfiles/manifests/rbac/clusterrolebinding.yaml"
+
+Step 2:- Create a secret that contains your Datadog API Key.  Replace the <DATADOG_API_KEY>
+
+$ kubectl create secret generic datadog-agent --from-literal api-key="78ef904b8401f15a458bb59464c6e54f" --namespace="default"
+
+Step 3:- Create the datadog-agent.yaml manifest out of one of the following templates
+
+Linux
+https://docs.datadoghq.com/resources/yaml/datadog-agent-vanilla.yaml
+https://docs.datadoghq.com/resources/yaml/datadog-agent-npm.yaml
+https://docs.datadoghq.com/resources/yaml/datadog-agent-apm.yaml
+https://docs.datadoghq.com/resources/yaml/datadog-agent-logs.yaml
+https://docs.datadoghq.com/resources/yaml/datadog-agent-logs-apm.yaml
+https://docs.datadoghq.com/resources/yaml/datadog-agent-all-features.yaml
+
+Step 4:- Set your Datadog site to datadoghq.comusing the DD_SITE environment variable in the datadog-agent.yaml manifest.
+$ export DD_SITE=datadoghq.com
+$ echo $DD_SITE
+
+Step 5 - 
+$ vi datadog-agent-all-features.yaml [ insert key ]
+$ kubectl apply -f datadog-agent-all-features.yaml
+
+
+Step 2 - Deploy POD which container SpringBoot app in Tomcat
+Step 3 - Confi Agent with Kub +
+------------------------------------------- 
+
+
+
+13.233.254.33
+
+Your Agent is running and functioning properly. It will continue to run in the
+background and submit metrics to Datadog.
+
+If you ever want to stop the Agent, run:
+
+     systemctl stop datadog-agent
+
+And to run it again run:
+
+systemctl start datadog-agent
+systemctl restart datadog-agent
+
+http://13.233.254.33:8080/
+
+===================================
+20 mins ----
+
+
+----
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as                        root:
+
+kubeadm join 172.31.2.188:6443 --token 2x80dj.4pmpx75h59ewltg1 \
+    --discovery-token-ca-cert-hash sha256:1a6259032f1557da57e13ba2e8ca6680b1993aed5909297d655bc54a94826169
+
+=====================
+docker pull jelastic/springboot
+
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tomcat
+  labels:
+    app: web
+spec:
+  containers:
+    - name: front-end
+      image: tomcat
+      ports:
+      - containerPort: 8080
+
+
+   22  DD_AGENT_MAJOR_VERSION=7 DD_API_KEY=78ef904b8401f15a458bb59464c6e54f DD_SITE="datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"
+
+agent
+trace-agent
+process-agent
+system-probe
+
+
+helm install datadog-agent -f values.yaml  --set datadog.apiKey=78ef904b8401f15a458bb59464c6e54f datadog/datadog --set targetSystem=linux
+
+kubectl delete -f "https://raw.githubusercontent.com/DataDog/datadog-agent/master/Dockerfiles/manifests/rbac/clusterrole.yaml"
+
+kubectl delete -f "https://raw.githubusercontent.com/DataDog/datadog-agent/master/Dockerfiles/manifests/rbac/serviceaccount.yaml"
+
+kubectl delete -f "https://raw.githubusercontent.com/DataDog/datadog-agent/master/Dockerfiles/manifests/rbac/clusterrolebinding.yaml"
+
+===========================
+Tomcat
+export CATALINA_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9012 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+
+set CATALINA_OPTS=-Dcom.sun.management.jmxremote
+  -Dcom.sun.management.jmxremote.port=%my.jmx.port%
+  -Dcom.sun.management.jmxremote.ssl=false
+  -Dcom.sun.management.jmxremote.authenticate=false
+
+https://geekflare.com/enable-jmx-tomcat-to-monitor-administer/
+
+=================================
+telnet intake.logs.datadoghq.com 10514
+78ef904b8401f15a458bb59464c6e54f {"message":"JSON formatted log sent through TCP", "ddtags":"env:dev", "ddsource":"terminal", "hostname":"gs-hostame", "service":"user"}
+=========================
+
+- Install the Datadog Agent
+
+- Verify Datadog Agent Status and Look for "Logs Agent" which is not running.
+$ sudo datadog-agent status
+
+- Enable log collection
+To enable log collection with the Agent, edit the datadog.yaml configuration file located at /etc/datadog-agent/datadog.yaml and set logs_enabled:true
+
+- Monitor a custom file
+$ touch log_file_to_monitor.log
+$ echo "First line of log" >> log_file_to_monitor.log
+$ sudo mkdir /etc/datadog-agent/conf.d/custom_log_collection.d/
+$ sudo touch /etc/datadog-agent/conf.d/custom_log_collection.d/conf.yaml
+logs:
+    - type: file
+      path: /tmp/log_file_to_monitor.log
+      source: custom
+      service: user
+$ sudo service datadog-agent restart
+
+-  Validation. Verify Datadog Agent Status and Look for "Logs Agent" which is running.
+$ sudo datadog-agent status
+
+
+echo "Second line of log" > log_file_to_monitor.log
+echo "Third line of log" > log_file_to_monitor.log
+
+  - type: file
+    path: /var/log/tomcat/*.log
+    source: tomcat
+    service: myapp
+
+  - type: file
+    path: /var/log/datadog/*.log
+    source: datadograjesh
+    service: myapp
+
+/var/log/datadog
+
+========================================================
+13.127.113.39 PANKAJ
+65.0.168.112	ANSHUMAN
+13.233.134.250	AKASH
+13.233.164.34	PRANAV
+13.234.231.228	RAGHU
+13.127.159.238 NISHANT
+13.126.25.93	PIYUSH
+13.126.249.212	VIVEK
+13.235.2.161
+65.1.1.48
+=========================================================
+Requirement
+------------------
+1. Install DD agent
+2. Install & Configure Tomcat
+3. Enable Log and Process Monitoring
+4. Find out ERROR logs in Logs searches.
+
+
