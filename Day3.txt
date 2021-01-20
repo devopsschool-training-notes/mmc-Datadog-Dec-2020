@@ -1,0 +1,248 @@
+===========
+Recap
+	Setup K8s - Integ with Datadog
+	Setup Tomcat - Integ with Datadog
+	Datadog Log monitoring
+	=============================
+
+Day 3
+==============================
+Datadog APM
+Datadog SYNT & RUM
+Datadog Others
+Datadog Monitor aka Alerts
+Datadog Dashboard
+
+=====================================
+Datadog APM
+==============================
+==============================
+Step 1 - You need to run ONE application			DONE
+	-- COMB 1 STATIC - WEBSERVER 
+	-- COMB 2 DYNAMIC - WEBSERVER + APPServer + Database
+		           ----------------------------------
+			    Apache       WAMP       MYSQL
+			   ===================================
+				WORDPRESS
+	TOMCAT --> RUN ONE JAVA 
+
+Step 2 - Install Agent
+	 ----> Apache Integration		
+	 ----> Tomcat Integration
+	 ----> mySQL Integration
+	 ----> APM - PHP			DONE		
+	 ----> APM - JAVA
+
+Step 3 - Jmeter
+	   Generate a load for APPS
+
+Step 4 - Visualize at Dashboard
+
+Step 5 - REPORT - ALTERT - DASHBOARD
+==============================
+==============================
+How to setup WAMP server in Linux?
+
+$ sudo -s
+$ cd /opt/
+$ yum install wget -y
+$ wget https://www.apachefriends.org/xampp-files/8.0.0/xampp-linux-x64-8.0.0-2-installer.run
+$ chmod 755 xampp-linux-x64-8.0.0-2-installer.run
+$ ./xampp-linux-x64-8.0.0-2-installer.run
+
+$ /opt/lampp/lampp status
+$ /opt/lampp/lampp start
+$ /opt/lampp/lampp status
+$ /opt/lampp/lampp stop
+$ /opt/lampp/lampp start
+$ curl http://13.233.196.197/dashboard/
+
+Referece:
+- https://www.apachefriends.org/index.html
+
+How to create mysql user, database and grant a permission to a database in mysql? 
+--------------------------------------------
+$ /opt/lampp/bin/mysql -u root
+CREATE DATABASE wordpress;
+show databases;
+CREATE USER 'wp-user'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON * . * TO 'wp-user'@'localhost';
+FLUSH PRIVILEGES;
+SHOW GRANTS FOR 'wp-user'@'localhost';	
+
+Reference - https://www.digitalocean.com/community/tutorials/how-to-create-a-new-user-and-grant-permissions-in-mysql  
+
+How to setup Wordpress in Xampp in Linux?
+--------------------------------------------
+cd /opt/lampp/htdocs/
+wget https://wordpress.org/latest.tar.gz
+tar -zxvf latest.tar.gz
+ls -la
+chown -R daemon:daemon wordpress
+ls -la
+Reference:
+- https://wordpress.org/download/#download-install
+
+# ACCESS your Web server @ http://13.233.196.197/wordpress
+
+admin
+vtS&Q^AqEzMPePdls#
+==============================
+==============================
+How to install & Configure Datadog APM with PHP based application?
+
+Step 1- Install DD Agent and Start it 
+- https://www.devopsschool.com/blog/how-to-install-datadog-agent-in-centos/
+
+Step 2- Choose your language-  Offcourse PHP
+
+Step 3- Install the PHP client for APM datadog tracing.
+
+$ cd /opt
+
+Reference:
+- https://github.com/DataDog/dd-trace-php/releases
+$ wget https://github.com/DataDog/dd-trace-php/releases/download/0.53.0/datadog-php-tracer-0.53.0-1.x86_64.rpm
+
+$ rpm -ivh datadog-php-tracer-0.53.0-1.x86_64.rpm
+### ERROR
+
+$ vi /opt/lampp/etc/php.ini
+extension=/opt/datadog-php/extensions/ddtrace-.so - WRONG
+$ more /opt/lampp/logs/php_error_log
+
+
+# Take latest version of ddtrace using "ls /opt/datadog-php/extensions/"
+$ vi /opt/lampp/etc/php.ini
+extension=/opt/datadog-php/extensions/ddtrace-20200930.so - RIGHT
+
+$ /opt/lampp/lampp restart
+
+$ export PATH=$PATH:/opt/lampp/bin/
+$ php --version
+$ php -m | grep ddtrace
+
+Step 4- vi /opt/lampp/etc/httpd.conf
+
+SetEnv DD_SERVICE 'wordpress'
+SetEnv DD_ENV 'dev'
+SetEnv DD_VERSION 'latest'
+SetEnv DD_TRACE_SAMPLE_RATE '1'
+SetEnv DD_TRACE_DEBUG true
+
+$ /opt/lampp/lampp restart
+
+
+Step 5 - Create a load on http://13.233.196.197/wordpress/
+
+Step 6 - 
+$ netstat -tulpn | grep LISTEN
+$ curl http://127.0.0.1:8126
+$ datadog-agent config | head -n 35
+
+By default the Datadog Agent is enabled in your datadog.yaml file under apm_enabled: true and listens for trace traffic at localhost:8126
+
+=====================================================================
+=====================================================================
+Generate a website load for application for Datadog APM traces
+
+Step 1- Download and Install JDK in Windows.
+
+Step 2- 
+
+Step 3 - Jmeter -  Generate a load for APPS
+	  
+==================
+
+
+java -javaagent:/path/to/dd-java-agent.jar -Ddd.profiling.enabled=true -Ddd.logs.injection=true -Ddd.trace.sample.rate=1 -Ddd.service=tomcat -Ddd.env=prod -jar path/to/your/app.jar
+
+==============================
+Step 1 - Install mySql Server
+
+Step 2 - Install mySql Client
+
+Step 3 - Database Operations
+
+export PATH=$PATH:/opt/lampp/bin
+
+$ mysql -u root
+CREATE USER 'datadog'@'localhost' IDENTIFIED BY 'password';
+
+$ mysql -u datadog --password=password -e "show status" | \
+grep Uptime && echo -e "\033[0;32mMySQL user - OK\033[0m" || \
+echo -e "\033[0;31mCannot connect to MySQL\033[0m"
+
+$ using client
+./mysql -u datadog --password=password -e "show slave status" && \
+echo -e "\033[0;32mMySQL grant - OK\033[0m" || \
+echo -e "\033[0;31mMissing REPLICATION CLIENT grant\033[0m"
+
+$ mysql -u root
+GRANT REPLICATION CLIENT ON *.* TO 'datadog'@'localhost' WITH MAX_USER_CONNECTIONS 5;
+
+$ mysql -u root
+GRANT PROCESS ON *.* TO 'datadog'@'localhost';
+
+$ mysql -u root
+show databases like 'performance_schema';
+
+$ mysql -u root
+GRANT SELECT ON performance_schema.* TO 'datadog'@'localhost';
+
+$ using client
+./mysql -u datadog --password=password -e "show slave status" && \
+echo -e "\033[0;32mMySQL grant - OK\033[0m" || \
+echo -e "\033[0;31mMissing REPLICATION CLIENT grant\033[0m"
+
+Step 4 - Enable mysql integration
+
+  - server: 127.0.0.1
+    user: datadog
+    pass: "password" # from the CREATE USER step earlier
+    port: "3306" # e.g. 3306
+    options:
+      replication: false
+      galera_cluster: true
+      extra_status_metrics: true
+      extra_innodb_metrics: true
+      extra_performance_metrics: true
+      schema_size_metrics: false
+      disable_innodb_metrics: false
+=========================================
+FRONTEND - http://13.233.196.197/wordpress/
+BackEnd - http://13.233.196.197/wordpress/wp-admin
+
+admin
+vtS&Q^AqEzMPePdls#
+=============================================
+Template
+===========
+Create Dynamic Page
+--------------------
+JAVA
+
+PHP	
+
+
+PYTHON	jinja2
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
